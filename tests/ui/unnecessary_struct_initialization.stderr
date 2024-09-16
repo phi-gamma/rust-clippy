@@ -55,7 +55,7 @@ error: unnecessary struct building
 LL |     let w = W { f1: v.f1, ..v };
    |             ^^^^^^^^^^^^^^^^^^^ help: replace with: `v`
 
-error: unnecessary struct building
+error: unnecessary range building
   --> tests/ui/unnecessary_struct_initialization.rs:102:14
    |
 LL |     let r2 = r1.start..r1.end;

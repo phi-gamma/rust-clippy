@@ -1,7 +1,7 @@
 use clippy_utils::diagnostics::span_lint_and_sugg;
 use clippy_utils::source::snippet;
 use clippy_utils::ty::is_copy;
-use clippy_utils::{get_parent_expr, path_to_local};
+use clippy_utils::{get_parent_expr, higher, path_to_local};
 use rustc_hir::{BindingMode, Expr, ExprField, ExprKind, Node, PatKind, Path, QPath, UnOp};
 use rustc_lint::{LateContext, LateLintPass};
 use rustc_session::declare_lint_pass;
@@ -74,11 +74,17 @@ impl LateLintPass<'_> for UnnecessaryStruct {
             _ => return,
         };
 
+        let mut hintmsg = "unnecessary struct building";
+
+        if let Some(_) = higher::Range::hir(expr) {
+            hintmsg = "unnecessary range building";
+        }
+
         span_lint_and_sugg(
             cx,
             UNNECESSARY_STRUCT_INITIALIZATION,
             expr.span,
-            "unnecessary struct building",
+            hintmsg,
             "replace with",
             snippet(cx, sugg, "..").into_owned(),
             rustc_errors::Applicability::MachineApplicable,

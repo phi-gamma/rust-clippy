@@ -93,7 +93,7 @@ fn main() {
     let x = W { f1: 42, f2: 1337 };
     let y = W { f1: w.f1, ..x };
 
-    // Should lint: range desugars to struct
+    // Should lint: range desugars to struct with custom message
     let r1 = 0..5;
     let r2 = r1;
 
